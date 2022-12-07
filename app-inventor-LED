@@ -1,0 +1,38 @@
+#include <BluetoothSerial.h>
+#include <Wire.h>
+
+BluetoothSerial BT;
+
+int LED = 16;
+
+char LEDstatus;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  BT.begin("TestFrank");//請改名
+  pinMode(LED, OUTPUT); 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (BT.available()) {
+    //讀取藍芽資料
+    char BTdata=BT.read();
+    
+    LEDstatus=BT.read();
+    //顯示在序列視窗
+    Serial.println(BTdata);
+    Serial.println(LEDstatus);
+  
+  switch (BTdata){ 
+  case 'a':
+  digitalWrite(LED,HIGH);
+  break;
+  case 'b':
+  digitalWrite(LED,LOW);
+  break;
+  }
+  }
+  delay(1);
+}
